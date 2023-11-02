@@ -1,7 +1,7 @@
 import "express-async-errors";
 // Import required modules
 import express from "express";
-import auth from "./routes/auth.js";
+import user from "./routes/user.js";
 import course from "./routes/course.js";
 import dotenv from "dotenv";
 import cors from "cors";
@@ -17,7 +17,7 @@ app.use(express.json());
 app.use(cors());
 
 // API Routes
-app.use("/api/v1", auth);
+app.use("/api/v1", user);
 
 app.use("/api/v1", course);
 

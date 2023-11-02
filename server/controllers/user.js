@@ -62,4 +62,14 @@ const signUpController = async (req, res) => {
   });
 };
 
-export { signUpController, signInController };
+const getEnrolledCourses = async (req, res) => {
+  const user = await User.find({ _id: req.user.userId });
+
+  if (!user) {
+    throw new UnauthenticatedError("Invalid Credentials");
+  }
+
+  res.json({ enrolledCourse: user[0].enrolledCourse });
+};
+
+export { signUpController, signInController, getEnrolledCourses };
