@@ -1,6 +1,7 @@
 import express from "express";
 import {
   getEnrolledCourses,
+  markCourseCompleted,
   signInController,
   signUpController,
 } from "../controllers/user.js";
@@ -13,5 +14,7 @@ router.route("/sign-in").post(signInController);
 router.route("/sign-up").post(signUpController);
 
 router.route("/mycourses").get(authMiddleware, getEnrolledCourses);
+
+router.route("/completed/:id").get(authMiddleware, markCourseCompleted);
 
 export default router;

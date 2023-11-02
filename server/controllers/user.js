@@ -2,6 +2,7 @@ import User from "../models/User.js";
 import BadRequestError from "../errors/bad-request.js";
 import UnauthenticatedError from "../errors/unauthenticated.js";
 import { StatusCodes } from "http-status-codes";
+import Course from "../models/Course.js";
 
 const signInController = async (req, res) => {
   const { email, password } = req.body;
@@ -72,4 +73,31 @@ const getEnrolledCourses = async (req, res) => {
   res.json({ enrolledCourse: user[0].enrolledCourse });
 };
 
-export { signUpController, signInController, getEnrolledCourses };
+const markCourseCompleted = async (req, res) => {
+  const user = await User.findOne({ _id: req.user.userId });
+
+  if (!user) {
+    throw new UnauthenticatedError("Invalid Credentials");
+  }
+
+  const courseId = req.params.id;
+
+  // console.log(user.enrolledCourse.find((item) => item.courseId == courseId));
+
+  const updateCourseStatus = user.enrolledCourse.find(
+    (item) => item.courseId == courseId
+  );
+  updateCourseStatus.completed = true;
+
+  // Save the updated user data
+  await user.save();
+
+  res.json({ user, courseId });
+};
+
+export {
+  signUpController,
+  signInController,
+  getEnrolledCourses,
+  markCourseCompleted,
+};

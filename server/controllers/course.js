@@ -53,6 +53,7 @@ const enrollCourse = async (req, res) => {
   });
 
   // Save the updated course with the new student
+  user.$bypassHooks = true;
   await course.save();
   await user[0].save();
 
