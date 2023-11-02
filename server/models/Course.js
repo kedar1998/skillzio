@@ -1,7 +1,6 @@
 import mongoose from "mongoose";
 
 const courseSchema = new mongoose.Schema({
-  id: Number,
   name: String,
   instructor: String,
   description: String,
@@ -23,7 +22,7 @@ const courseSchema = new mongoose.Schema({
   ],
   students: [
     {
-      id: Number,
+      studentId: String,
       name: String,
       email: String,
     },

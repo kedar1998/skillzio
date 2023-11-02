@@ -27,6 +27,14 @@ const userSchema = new mongoose.Schema({
     trim: true,
     minlength: 6,
   },
+  enrolledCourse: {
+    type: [
+      {
+        courseId: String,
+        courseName: String,
+      },
+    ],
+  },
 });
 
 userSchema.pre("save", async function () {

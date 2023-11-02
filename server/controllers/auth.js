@@ -27,8 +27,11 @@ const signInController = async (req, res) => {
   user.password = undefined;
 
   res.status(StatusCodes.OK).json({
+    id: user._id,
     name: user.name,
+    email: user.email,
     token,
+    enrolledCourse: user.enrolledCourse,
   });
 };
 
@@ -50,10 +53,12 @@ const signUpController = async (req, res) => {
   const token = user.createJWT();
 
   res.status(StatusCodes.CREATED).json({
+    id: user._id,
     name: user.name,
     email: user.email,
     password: user.password,
     token,
+    enrolledCourse: user.enrolledCourse,
   });
 };
 
