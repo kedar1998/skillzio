@@ -11,13 +11,10 @@ export const courseSlice = createSlice({
     increment: (state) => {
       state.count += 1;
     },
-    decrement: (state) => {
-      state.count -= 1;
-    },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { increment, decrement } = courseSlice.actions;
+export const { increment } = courseSlice.actions;
 
 export default courseSlice.reducer;

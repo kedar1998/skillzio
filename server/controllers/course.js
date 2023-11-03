@@ -18,7 +18,7 @@ const getAllCourses = async (req, res) => {
 
 // Get single course
 const getCourse = async (req, res) => {
-  const course = await Course.find({ _id: req.params.id });
+  const course = await Course.findOne({ _id: req.params.id });
 
   res.status(StatusCodes.OK).json({
     course,

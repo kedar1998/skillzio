@@ -4,10 +4,12 @@ import Signin from "./pages/Signin";
 import Signup from "./pages/Signup";
 import Coursedetail from "./pages/Coursedetail";
 import Dashboard from "./pages/Dashboard";
+import Navbar from "./components/Navbar";
 
 function App() {
   return (
     <div className="">
+      <Navbar />
       <Routes>
         <Route path="/" element={<Courses />} />
         <Route path="/dashboard" element={<Dashboard />} />
