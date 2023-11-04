@@ -29,6 +29,8 @@ const getCourse = async (req, res) => {
 const enrollCourse = async (req, res) => {
   const course = await Course.findOne({ _id: req.params.id });
 
+  console.log(course.thumbnail);
+
   if (!course) {
     throw new BadRequestError("No course found");
   }
@@ -53,7 +55,6 @@ const enrollCourse = async (req, res) => {
   });
 
   // Save the updated course with the new student
-  user.$bypassHooks = true;
   await course.save();
   await user[0].save();
 

@@ -17,7 +17,11 @@ const Navbar = () => {
             </Link>
           </div>
           <div className="flex gap-5 items-center">
-            {user && <p className="text-sm md:text-lg">Dashboard</p>}
+            {user && (
+              <Link to="/dashboard" className="text-sm md:text-lg">
+                Dashboard
+              </Link>
+            )}
             {user ? (
               <button
                 onClick={() => {

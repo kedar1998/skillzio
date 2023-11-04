@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 
 import { PiTimer } from "react-icons/pi";
@@ -10,11 +10,21 @@ import { BsCheck2Circle } from "react-icons/bs";
 import { useSelector } from "react-redux";
 
 const Coursedetail = () => {
+  const navigate = useNavigate();
   const { user } = useSelector((state) => state.user);
   const { id } = useParams();
 
   const [courseDetails, setCourseDetails] = useState([]);
   const [enrolled, setenrolled] = useState(false);
+  const [completed, setCompleted] = useState(
+    false ||
+      user?.enrolledCourse?.find((item) => item.courseId == id)?.completed
+  );
+
+  console
+    .log
+    // user?.enrolledCourse.find((item) => item.courseId == id).completed
+    ();
 
   const getCoursesDetails = async () => {
     try {
@@ -51,17 +61,50 @@ const Coursedetail = () => {
 
       // Step 3: Store the updated array back to local storage
       localStorage.setItem("enrolledCourse", JSON.stringify(storedArray));
+      navigate(0);
     } catch (err) {
       console.log(err);
     }
   };
 
   const alreadyEnrolled = () => {
-    const isAlreadyEnrolled = user?.enrolledCourse.some(
+    const isAlreadyEnrolled = user?.enrolledCourse?.some(
       (item) => item.courseId === id
     );
-    console.log(isAlreadyEnrolled);
     setenrolled(isAlreadyEnrolled);
+  };
+
+  const markCourseCompleted = async () => {
+    try {
+      const { data } = await axios.get(
+        `http://localhost:5000/api/v1/completed/${id}`,
+        {
+          headers: { authorization: `Bearer ${user.token}` },
+        }
+      );
+
+      // Step 1: Retrieve the array from local storage
+      const storedArray =
+        JSON.parse(localStorage.getItem("enrolledCourse")) || [];
+
+      const courseId = id; // Assuming `id` is the courseId to match
+      const foundIndex = storedArray.findIndex(
+        (item) => item.courseId === courseId
+      );
+
+      if (foundIndex !== -1) {
+        storedArray[foundIndex].completed = true; // Update the 'completed' property
+      }
+
+      localStorage.setItem("enrolledCourse", JSON.stringify(storedArray));
+      setCompleted(true);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const redirectToSignin = () => {
+    navigate("/sign-in");
   };
 
   useEffect(() => {
@@ -147,16 +190,20 @@ const Coursedetail = () => {
             </div>
 
             <div className="w-full">
-              {enrolled ? (
+              {enrolled && !completed ? (
                 <button
-                  onClick={() => {}}
+                  onClick={() => markCourseCompleted()}
                   className="py-1.5 bg-[#F55D00] text-white font-semiboldw-full mt-4 w-full"
                 >
                   Mark as completed
                 </button>
+              ) : enrolled && completed ? (
+                <button className="py-1.5 bg-[#F55D00] text-white font-semiboldw-full mt-4 w-full">
+                  Completed
+                </button>
               ) : (
                 <button
-                  onClick={user ? enrollForCourse : ""}
+                  onClick={user ? enrollForCourse : redirectToSignin}
                   className="py-1.5 bg-[#F55D00] text-white font-semiboldw-full mt-4 w-full"
                 >
                   {user ? "Enroll" : "Sign In to enroll"}
